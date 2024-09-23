@@ -1,5 +1,3 @@
-require("Annotations");
-
 ---Server_StartDistribution hook
 ---@param game GameServerHook
 ---@param standing GameStanding

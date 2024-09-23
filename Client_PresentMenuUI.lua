@@ -1,5 +1,3 @@
-require("Annotations");
-
 ---Client_PresentMenuUI hook
 ---@param rootParent RootParent
 ---@param setMaxSize fun(width: number, height: number) # Sets the max size of the dialog

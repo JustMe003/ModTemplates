@@ -1,5 +1,3 @@
-require("Annotations");
-
 ---Client_PresentCommercePurchaseUI hook
 ---@param rootParent RootParent
 ---@param game GameClientHook
