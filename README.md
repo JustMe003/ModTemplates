@@ -38,7 +38,7 @@ Object used to store the data of a individual Timer
 | TrackLongestTime | boolean _or_ nil | false | When true, **new** timers will keep track of the longest time recorded |
 | TrackAllTimes | boolean _or_ nil | false | When true, **new** timers will keep track of every individual recorded time |
 
-Object passed to [Timer.Config](#Timer.Config) to configure the library
+Object passed to [Timer.Config](#Timer-Config) to configure the library
 
 ## Functions
 
@@ -61,7 +61,7 @@ Object passed to [Timer.Config](#Timer.Config) to configure the library
 
 **Description**: Function to configure the timers
 
-**How to use**: To configure the library this function must be used. Pass a table that corresponds to the [TimerConfig](#TimerConfig) object. This is also the only function that may be called before [Timer.InitTimer](#Timer-Init)
+**How to use**: To configure the library this function must be used. Pass a table that corresponds to the [TimerConfig](#TimerConfig) object. This is also the only function that may be called before [Timer.InitTimer](#Timer-Initialization)
 
 
 ### Timer Start
