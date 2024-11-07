@@ -23,9 +23,11 @@ The advantage of using the same timer multiple times is that the library keeps t
 | Name | string | | The name of the timer |
 | TotalSeconds | number | | The total number of seconds this timer has recorded |
 | TimesUsed | number | | The number of times this timer was used |
-| ShortestTime | number _OR_ nil | nil | The shortest recorded time in seconds. This will only be tracked if the [TrackShortestTime]() was configured as `true` |
-| LongestTime | number _OR_ nil | nil | The longest recorded time in seconds |
-| Times | number[] _OR_ nil | nil | Array containing all recorded times |
+| ShortestTime | number _OR_ nil | nil | The shortest recorded time in seconds. This will only be tracked if the [TrackShortestTime](#TimerConfig) was configured as `true` |
+| LongestTime | number _OR_ nil | nil | The longest recorded time in seconds. This will only be tracked if the [TrackLongestTime](#TimerConfig) was configured as `true`  |
+| Times | number[] _OR_ nil | nil | Array containing all recorded times. This will only be tracked if the [TrackAllTimes](#TimerConfig) was configured as `true`  |
+
+Object used to store the data of a individual Timer
 
 
 ### TimerConfig
@@ -37,9 +39,11 @@ The advantage of using the same timer multiple times is that the library keeps t
 | TrackLongestTime | boolean _or_ nil | false | When true, **new** timers will keep track of the longest time recorded |
 | TrackAllTimes | boolean _or_ nil | false | When true, **new** timers will keep track of every individual recorded time |
 
+Object passed to [Timer.Config](#Timer.Config) to configure the library
+
 ## Functions
 
-### InitTimer
+### Timer.InitTimer
 **Definition**: `Timer.InitTimer(wl)`
 
 **Parameters**: 
@@ -47,10 +51,10 @@ The advantage of using the same timer multiple times is that the library keeps t
 
 **Description**: Initializes the necessary timer components 
 
-**How to use**: This function must be called before you can start a timer. In order to be able to time how long something took the library needs access to the [TickCount()](https://www.warzone.com/wiki/Mod_API_Reference:TickCount) function. Therefore, starting/stopping a timer before this function has been called will throw an error. The only function you may call before initializing the library is the [Timer.Config]() function.
+**How to use**: This function must be called before you can start a timer. In order to be able to time how long something took the library needs access to the [TickCount()](https://www.warzone.com/wiki/Mod_API_Reference:TickCount) function. Therefore, starting/stopping a timer before this function has been called will throw an error. The only function you may call before initializing the library is the [Timer.Config](#Timer.Config) function.
 
 
-### Config
+### Timer.Config
 **Definition**: `Timer.Config(params)`
 
 **Parameters**:
@@ -58,4 +62,4 @@ The advantage of using the same timer multiple times is that the library keeps t
 
 **Description**: Function to configure the timers
 
-**How to use**: To configure the library this function must be used. Pass a table that corresponds to the [TimerConfig](#TimerConfig) object
+**How to use**: To configure the library this function must be used. Pass a table that corresponds to the [TimerConfig](#TimerConfig) object. This is also the only function that may be called before [Timer.InitTimer](#Timer.InitTimer)
