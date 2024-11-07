@@ -19,7 +19,9 @@ This is my collection of files which I copy over to new projects if I need them.
 | Name | string | The name of the timer |
 | TotalSeconds | number | The total number of seconds this timer has recorded |
 | TimesUsed | number | The number of times this timer was used |
-| ShortestTime | number || nil | test |
+| ShortestTime | number _OR_ nil | The shortest recorded time in seconds. This will only be tracked if the [TrackShortestTime]() was configured as `true` |
+| LongestTime | number _OR_ nil | The longest recorded time in seconds |
+| Times | number[] _OR_ nil | Array containing all recorded times |
 
 ## Functions
 
