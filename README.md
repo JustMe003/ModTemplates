@@ -2,6 +2,7 @@
 
 This is my collection of files which I copy over to new projects if I need them. This README will provide you with additional information if needed on the library files
 
+### Test.Test
 
 ---
 
@@ -63,3 +64,5 @@ Object passed to [Timer.Config](#Timer.Config) to configure the library
 **Description**: Function to configure the timers
 
 **How to use**: To configure the library this function must be used. Pass a table that corresponds to the [TimerConfig](#TimerConfig) object. This is also the only function that may be called before [Timer.InitTimer](#Timer.InitTimer)
+
+[test](#Test.Test)
