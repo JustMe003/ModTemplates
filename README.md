@@ -42,7 +42,7 @@ Object passed to [Timer.Config](#Timer.Config) to configure the library
 
 ## Functions
 
-### Timer.InitTimer
+### InitTimer
 **Definition**: `Timer.InitTimer(wl)`
 
 **Parameters**: 
@@ -50,10 +50,10 @@ Object passed to [Timer.Config](#Timer.Config) to configure the library
 
 **Description**: Initializes the necessary timer components 
 
-**How to use**: This function must be called before you can start a timer. In order to be able to time how long something took the library needs access to the [TickCount()](https://www.warzone.com/wiki/Mod_API_Reference:TickCount) function. Therefore, starting/stopping a timer before this function has been called will throw an error. The only function you may call before initializing the library is the [Timer.Config](#Timer.Config) function.
+**How to use**: This function must be called before you can start a timer. In order to be able to time how long something took the library needs access to the [TickCount()](https://www.warzone.com/wiki/Mod_API_Reference:TickCount) function. Therefore, starting/stopping a timer before this function has been called will throw an error. The only function you may call before initializing the library is the [Timer.Config](#Timer.Functions.Config) function.
 
 
-### Timer.Config
+### Config
 **Definition**: `Timer.Config(params)`
 
 **Parameters**:
