@@ -18,6 +18,8 @@ This is my collection of files which I copy over to new projects if I need them.
 | ---------- | ---- | ----------- |
 | Name | string | The name of the timer |
 | TotalSeconds | number | The total number of seconds this timer has recorded |
+| TimesUsed | number | The number of times this timer was used |
+| ShortestTime | number || nil | test |
 
 ## Functions
 
