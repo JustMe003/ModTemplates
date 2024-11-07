@@ -10,6 +10,7 @@ This is my collection of files which I copy over to new projects if I need them.
 
 ### Config
 **Definition**: `Timer.Config(wl)`
+
 **Parameters**: 
 - wl [_WL_](https://www.warzone.com/wiki/Mod_API_Reference:WL)
 **Description**: Function to configure the timers 
