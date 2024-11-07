@@ -57,8 +57,55 @@ Object passed to [Timer.Config](#Timer.Config) to configure the library
 **Definition**: `Timer.Config(params)`
 
 **Parameters**:
-- params [TimerConfig](#TimerConfig)
+- params [_TimerConfig_](#TimerConfig)
 
 **Description**: Function to configure the timers
 
 **How to use**: To configure the library this function must be used. Pass a table that corresponds to the [TimerConfig](#TimerConfig) object. This is also the only function that may be called before [Timer.InitTimer](#Timer-Init)
+
+
+### Timer Start
+**Definition**: `Timer.Start(name)`
+
+**Parameters**:
+- name _string_
+
+**Description**: Starts a new Timer
+
+**How to use**: Call this function to start a timer. To stop recording the elapsed time, call [`Timer.Stop(name)`](#Timer-Stop)
+
+
+### Timer Stop
+**Definition**: `Timer.Stop(name)`
+
+**Parameters**: 
+- name _string_
+
+**Description**: Stops a timer
+
+**How To Use**: Call this function to stop a timer. Trying to stop a timer that has not started will result in an error. To start a timer, use [`Timer.Start(name)`](#Timer-Start).
+
+
+### Timer Get All Timers
+**Definition**: `Timer.GetAllTimers()`
+
+**Returns**:
+- _table<string, [TimerData](#TimerData)>_    The table containing all the data of all timers
+
+**Description**: Returns the [TimerData](#TimerData)
+
+**How To Use**: This function can be used to get all the finished timers and their data. You should not modify this data!
+
+
+### Timer Get Timer
+**Definition**: `Timer.GetTimer(name)`
+
+**Parameters**:
+- name _string_
+
+**Returns**:
+- _[TimerData](#TimerData)_    The data of the timer corresponding with the passed name
+
+**Description**: Returns the [TimerData](#TimerData) of the timer with the passed name
+
+**How To Use**: Use this function to get the data of a specific timer. You should not modify this data!
