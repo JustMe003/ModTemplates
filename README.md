@@ -11,7 +11,11 @@ This is my collection of files which I copy over to new projects if I need them.
 
 `Timer.lua` is a library file I use to time (parts of) my mods. For example, if I want to improve a mod, I make the new implementation and then time both of them to see which of them is faster. In general it is great to know how fast your program is, you might need to put some constraints on it.
 
-## Objects
+A timer is a simple object that keeps track of when it started. When it is stopped, it subtracts the starting time from the final time to calculate the total recorded time. Timers all have a name, and you can use the same name multiple times. However, you cannot have multiple timers with the same name running at the same time. 
+
+The advantage of using the same timer multiple times is that the library keeps track of some statistics, such as shortest recorded time, longest time recorded, etc. This allows you to get a better insight in how much time certain processes take in your program.
+
+##  Objects
 
 ### TimerData
 | Field name | Type | Default | Description |
@@ -25,10 +29,13 @@ This is my collection of files which I copy over to new projects if I need them.
 
 
 ### TimerConfig
-| Field name | Type | Description |
-| ---------- | ---- | ----------- |
-| PrintTimesWhenStopped | boolean | When true, each timer that is stopped will print its recorded time to the log |
-| PrintTimerUpdateWhenStopped | 
+| Field name | Type | Default | Description |
+| ---------- | ---- | ------- | ----------- |
+| PrintTimesWhenStopped | boolean | true | When true, each timer that is stopped will print its recorded time to the log |
+| PrintTimerUpdateWhenStopped | boolean | false | When true, each timer that is stopped will print the updated values of that timer |
+| TrackShortestTime | boolean | false | When true, **new** timers will keep track of the shortest time recorded |
+| TrackLongestTime | boolean | false | When true, **new** timers will keep track of the longest time recorded |
+| TrackAllTimes | boolean | false | When true, **new** timers will keep track of every individual recorded time |
 
 ## Functions
 
