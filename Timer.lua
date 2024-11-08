@@ -233,6 +233,7 @@ function SCOPE.Stop(name)
         PrintTimerUpdate(Timers[name]);
     end
     
+    StartTimeStamps[name] = nil;
 end
 
 ---Returns the [TimerData](lua://TimerData)
