@@ -20,5 +20,8 @@ Alternatively add if from VS code's settings UI. You are looking for Lua workspa
 
 For learning more about how this work, check out luals [wiki](https://luals.github.io/wiki/annotations/)
 
-Annotations made by [Just_A_Dutchman_]()
-README created by [TBestLittleHelper]()
+
+
+Annotations made by [Just_A_Dutchman_](https://github.com/JustMe003)
+
+README created by [TBestLittleHelper](https://github.com/TBestLittleHelper)
