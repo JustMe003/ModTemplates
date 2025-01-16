@@ -19,3 +19,6 @@ Remember to put you local path, not filepath. For example "C:\\WarzoneMods\\ModT
 Alternatively add if from VS code's settings UI. You are looking for Lua workspace : Libary.
 
 For learning more about how this work, check out luals [wiki](https://luals.github.io/wiki/annotations/)
+
+Annotations made by [Just_A_Dutchman_]()
+README created by [TBestLittleHelper]()
