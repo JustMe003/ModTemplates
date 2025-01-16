@@ -139,6 +139,7 @@
 ---@field DefensePower integer # The total defending power of the entire Armies object
 ---@field Fogged boolean # True when the client cannot see the Armies object
 ---@field IsEmpty boolean # True if the Armies object has 0 armies and has 0 special units
+---@field NumArmies integer # Number of normal armies here.
 ---@field SpecialUnits SpecialUnit[] # Array containing all the special units in this Armies object
 ---@field Add fun(armies: Armies): Armies # Combines the 2 Armies object and returns the result. A new Armies object is created and returned
 ---@field Subtract fun(armies: Armies): Armies # Combines the 2 Armies object and returns the result. A new Armies object is created and returned
@@ -182,7 +183,7 @@
 ---@field DefensePower integer # The number it adds to the total defence power of the Armies object it is part of
 ---@field DefensePowerPercentage integer # When this unit defends from an attack, the total defence power is multiplied by this number. `1.0` means nothing happens, `2.0` means that the power is doubled (+100%) and `0.5` means the power if halved (-50%)
 ---@field Health integer | nil # Defines the health of the unit. When nil the DamageToKill is used to determine when this unit dies. The unit will automatically reduce health when it takes damage and is removed when it's health is below 1
----@field ImageFileName string # The name of the PNG file in the `SpecialUnitsImages` folder. This will be the icon of the unit that is shown on the map
+---@field ImageFilename string # The name of the PNG file in the `SpecialUnitsImages` folder. This will be the icon of the unit that is shown on the map
 ---@field IncludeABeforeName boolean # If true, when displaying this units name an 'A' will be put before the name
 ---@field IsVisibleToAllPlayers boolean # If true, this unit is at all times visible for all players, meaning that a territory with this unit will be visible for every player in the game
 ---@field ModData string # Custom data added to the unit. Please note that using the ID of the unit to save data in one of the Mod storages is not safe since it is fairly common to clone a unit, modify where necessary, remove the old unit and add the clone back. This results in essentially the same unit but with a different ID.
@@ -839,7 +840,8 @@
 ---| 'Gold' # Gold enum
 
 ---@class ArmiesWL # WL Armies
----@field Create fun(armies: integer, specialUnitOpt: SpecialUnit[]): Armies # Used to create a new Armies object
+---@field Create fun(armies: integer, specialUnitOpt?: SpecialUnit[] | nil): Armies # Used to create a new Armies object. Special units can be nil, omitted, or an empty array if there aren't any.
+
 
 ---@class Boss1WL # WL Boss1
 ---@field CreateForScenario fun(): Boss1 # Creates a Boss1 unit for a custom scenario
@@ -922,7 +924,7 @@
 ---@field Create fun(playerID: PlayerID, cardInstanceID: CardInstanceID): GameOrderDiscard # Creates a GameOrderDiscard object
 
 ---@class GameOrderEventWL # WL GameOrderEvent
----@field Create fun(playerID: PlayerID, message: string, visibleToOpt: HashSet<PlayerID> | nil, terrModsOpt: TerritoryModification[], setResoucesOpt: table<PlayerID, table<EnumResourceType, integer>> | nil, incomeModsOpt: IncomeMod[] | nil): GameOrderEvent # Creates a GameOrderEvent object
+---@field Create fun(playerID: PlayerID, message: string, visibleToOpt: HashSet<PlayerID> | nil, terrModsOpt?: TerritoryModification[], setResoucesOpt: table<PlayerID, table<EnumResourceType, integer>> | nil, incomeModsOpt: IncomeMod[] | nil): GameOrderEvent # Creates a GameOrderEvent object
 
 ---@class GameOrderPlayCardAbandonWL # WL GameOrderPlayCardAbandon
 ---@field Create fun(cardInstanceID: CardInstanceID, playerID: PlayerID, targetTerritoryID: TerritoryID): GameOrderPlayCardAbandon # Creates a GameOrderPlayCardAbandon object
