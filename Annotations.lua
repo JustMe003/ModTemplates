@@ -1088,7 +1088,6 @@
 ---@field SetOnvalueChanged fun(onValueChanged: fun()): RadioButton # Set the function that will be invoked when the radio button gets checked or unchecked by the mod or player
 ---@field GetOnValueChanged fun(): fun() # Get the funcion that will be invoked when the radio button is checked or unchecked by the mod or player
 ---@field SetGroup fun(group: RadioButtonGroup): RadioButton # Adds this radio button to a [radio button group](lua://RadioButtonGroup). A radio button can only be in 1 group at the time
----@field GetGroup fun() # Gets the group the radio button is in
 
 ---@class TextInputField: UIObject, TextUIObject, InteractableUIObject # A container used for getting string inputs
 ---@field SetPlaceholderText fun(text: string): TextInputField # Set the text that will be displayed when the text field is empty
