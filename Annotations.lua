@@ -122,7 +122,7 @@
 ---@field Cards table<PlayerID, PlayerCards> # Table containing all the cards of each player
 ---@field Territories table<TerritoryID, TerritoryStanding> # Table containing all the TerritoryStandings, identified by the TerritoryID
 ---@field Resources table<PlayerID, table<EnumResourceType, integer>> # Table containing the resources of each player
----@field IncomeMods IncomeMod[] # Array containing all the income modifications made last turn
+---@field IncomeMods IncomeMod[] # Array containing all the income modifications made last turn. Writable in the Server_StartGame hook
 ---@field NumResources fun(playerID: PlayerID, type: EnumResourceType): integer # Returns the amount of this resource type a player has
 
 ---@class TerritoryStanding: ProxyObject # Territory standing
@@ -251,6 +251,12 @@
 ---@class GameOrderPlayCardBomb: GameOrderPlayCard # Game order for playing a bomb card
 ---@field TargetTerritoryID TerritoryID # The ID of the territory that will be bombed
 
+---@class GameOrderPlayCardCustom: GameOrderPlayCard # Game order for playing a custom card
+---@field CustomCardID integer # The CardID of the custom card
+---@field Description string # The description of the custom card
+---@field ModData string # Field used to pass any data along to the server for processing
+---@field Phase EnumTurnPhase | nil # Optional phase parameter of the card. Determines when the card is played during a turn
+
 ---@class GameOrderAttackTransfer: GameOrder # Game order for attacking and / or transfering
 ---@field AttackTeammates boolean # Set to true if the order will attack teammates
 ---@field AttackTransfer EnumAttackTransfer # The type of the order
@@ -298,6 +304,8 @@
 ---@field AddCardPiecesOpt table<PlayerID, table<CardID, integer>> # The amount of card pieces that are added of each card for each player
 ---@field RemoveWholeCardsOpt table<PlayerID, CardInstanceID> # Removes whole cards from a player
 ---@field JumpToActionSpotOpt RectangleVM | nil # Makes the client view jump to the given RectangleVM
+---@field FogModsOpt FogMod[] # Adds [FogMods](lua://FogMod) for modifying fog
+---@field RemoveFogModsOpt GUID[] # Removes [FogMods](lua://FogMod) that were previously added
 ---@field ModID ModID | nil # The ID of the mod who created this order
 
 ---@class GameOrderCustom: GameOrder # Custom game order, mostly used for creating custom client orders that are processed into GameOrderEvents on the server side
@@ -618,6 +626,12 @@
 ---@class CardGameSurveillance: CardGame # Surveillance card
 ---@field Duration integer # The duration of the surveillance card
 
+---@class CardGameCustom: CardGame # Custom card
+---@field CustomCardDescription string # The description of the custom card
+---@field ImageFilename string # The filename of the image of the card
+---@field ModID ModID # The ModID of the mod that added the card to the game
+---@field Name string # The name of the custom card
+
 ---@class CustomScenario # Custom scenario
 ---@field SlotsAvailable Slot[] # The slots that are available
 ---@field Territories table<TerritoryID, CustomScenarioTerritory> # Table containing all the custom scenario territory data, indexed by TerritoryID
@@ -638,6 +652,14 @@
 ---@field ClanID ClanID # The ID that identifies this clan
 ---@field IconIncre integer # Not documented
 ---@field Name string # The name of the clan
+
+---@class FogMod # FogMod object
+---@field ID GUID # The unique identifier for the FogMod object
+---@field Message string # A message explaining why the fog is applied on the territory. This is currently not displayed anywhere, but this might happen in a future update
+---@field FogLevel EnumStandingFogLevel # A [fog level enum](lua://EnumStandingFogLevel) value
+---@field Priority integer # Affects how this fog modification interacts with other fog modifications. The priority also determines what happens: <br> Priority is >= 9000: The FogMod will always change the territory visibility <br> Priority is 6000 - 8999: The FogMod will not affect the player's own territories or the player's teammates territories (your own territories and teammates territories are always visible, like normal) <br> Priority is 3000 - 5999: The FogMod will also not affect a territory that's being made visible by a special unit <br> Priority is < 3000: The FogMod will also not affect any territory that's being made visible by a spy, recon, or surveillance cards
+---@field Territories HashSet<TerritoryID> # A list of the territory IDs to which this fog modification will be applied
+---@field PlayersAffectedOpt HashSet<PlayerID> | nil # A list of all players that will be affected by the fog modification. When this field is nil, it will be applied to all players
 
 
 ---@alias TerritoryID integer # The identifier used to uniquely identify territories
@@ -728,11 +750,13 @@
 ---@field TerritoryModification TerritoryModificationWL # Allows for creating TerritoryModification objects
 ---@field TickCount fun(): integer # The amount of time in miliseconds have passed, useful for profiling code
 ---@field ModOrderControl EnumModOrderControl # Available ModOrderControl enums
+---@field FogMod FogModWL # Allows for creating FogMod objects
 
 ---@class EnumPlayerID #
 ---| 'Neutral' # The PlayerID representing a neutral territory
 ---| 'Fog' # The PlayerID representing a fogged territory
 ---| 'AvailableForDistribution' # The PlayerID representing a territory that can be picked; Only used in the distribution turn
+---| 'ToString' # Function
 
 ---@class EnumTerritoryConnectionWrap #
 ---| 'Normal' # A normal connection
@@ -982,6 +1006,8 @@
 ---| 'Skip' # Skip the order and add an order that tells the player it got skipped
 ---| 'SkipAndSupressSkippedMessage' # Skip the order but not add an order that tells the player it got skipped
 
+---@class FogModWL # WL FogMod
+---@field Create fun(message: string, fogLevel: EnumStandingFogLevel, priority: integer, territories: HashSet<TerritoryID>, playersAffectedOpt: HashSet<PlayerID> | nil): FogMod # Creates a [FogMod](lua://FogMod) object
 
 
 
@@ -991,7 +1017,9 @@
 ---@field CreateHorizontalLayoutGroup fun(parent: UIObject): HorizontalLayoutGroup # Create a HorizontalLayoutGroup that will display all it's children horizontally
 ---@field CreateLabel fun(parent: UIObject): Label # An UI object for displaying text
 ---@field CreateButton fun(parent: UIObject): Button # A button that the client can interact with
----@field CreateCheckBox fun(parent: UIObject): CheckBox # A UI object for inputting boolean values
+---@field CreateCheckBox fun(parent: UIObject): CheckBox # An UI object for inputting boolean values
+---@field CreateRadioButtonGroup fun(parent: UIObject): RadioButtonGroup # An UI object for grouping individual radio buttons together
+---@field CreateRadioButton fun(parent: UIObject): RadioButton
 ---@field CreateTextInputField fun(parent: UIObject): TextInputField # A UI object for inputting text values
 ---@field CreateNumberInputField fun(parent: UIObject): NumberInputField # A UI object for inputting number values
 ---@field Destroy fun(object: UIObject) # Destroys and removes the passed UI object, note that all children are also destroyed
@@ -1005,7 +1033,7 @@
 ---@field text string # The text displayed on the option
 ---@field selected fun() # Zero argument function that will be invoked if this option is picked
 
----@class UIObject # An UI object
+---@class UIObject  # An UI object
 ---@field SetPreferredWidth fun(width: number): UIObject # Set the preferred width of the UIObject. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
 ---@field GetPreferredWidth fun(): number # Returns the preferred width set for this UIObject
 ---@field SetPreferredHeight fun(height: number): UIObject # Set the preferred height of the UIObject. It may not be this tall if there is not enough space, and it may be taller if FlexibleHeight is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
@@ -1046,11 +1074,21 @@
 ---@field SetOnClick fun(onClick: fun()): Button # Set the function that will be invoked when the client clicks on the button
 ---@field GetOnClick fun(): fun() # Get the function that will be invoked when the client clicks the button
 
----@class CheckBox: UIObject, TextUIObject, InteractableUIObject # A container used for getting boolean inputs from a client
+---@class CheckBox: UIObject, TextUIObject, InteractableUIObject # A container used for getting boolean inputs from a client. If you want a user to select only 1 option from a list, see [RadioButton](lua://RadioButton)
 ---@field SetIsChecked fun(isChecked: boolean): CheckBox # Set whether the checkbox is checked or not
 ---@field GetIsChecked fun(): boolean # Get whether the checkbox is checked, used to retrieve boolean inputs from a player
 ---@field SetOnValueChanged fun(onValueChanged: fun()): CheckBox # Set the function that will be invoked when the client or mod changes the state of the checkbox
 ---@field GetOnValueChanged fun(): fun() # Get the function that will be invoked when the client or mod changes the state of the checkbox
+
+---@class RadioButtonGroup
+
+---@class RadioButton: UIObject, TextUIObject, InteractableUIObject # A container used for getting boolean inputs from a client. Useful if you want the user to select only 1 option, to allow more options, see [CheckBox](lua://CheckBox)
+---@field SetIsChecked fun(isChecked: boolean): RadioButton # Set whether the radio button is checked or not
+---@field GetIsChecked fun(): boolean # Get whether the radio button is checked or not
+---@field SetOnvalueChanged fun(onValueChanged: fun()): RadioButton # Set the function that will be invoked when the radio button gets checked or unchecked by the mod or player
+---@field GetOnValueChanged fun(): fun() # Get the funcion that will be invoked when the radio button is checked or unchecked by the mod or player
+---@field SetGroup fun(group: RadioButtonGroup): RadioButton # Adds this radio button to a [radio button group](lua://RadioButtonGroup). A radio button can only be in 1 group at the time
+---@field GetGroup fun() # Gets the group the radio button is in
 
 ---@class TextInputField: UIObject, TextUIObject, InteractableUIObject # A container used for getting string inputs
 ---@field SetPlaceholderText fun(text: string): TextInputField # Set the text that will be displayed when the text field is empty
