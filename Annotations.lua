@@ -1080,7 +1080,7 @@
 ---@field SetOnValueChanged fun(onValueChanged: fun()): CheckBox # Set the function that will be invoked when the client or mod changes the state of the checkbox
 ---@field GetOnValueChanged fun(): fun() # Get the function that will be invoked when the client or mod changes the state of the checkbox
 
----@class RadioButtonGroup
+---@class RadioButtonGroup: UIObject
 
 ---@class RadioButton: UIObject, TextUIObject, InteractableUIObject # A container used for getting boolean inputs from a client. Useful if you want the user to select only 1 option, to allow more options, see [CheckBox](lua://CheckBox)
 ---@field SetIsChecked fun(isChecked: boolean): RadioButton # Set whether the radio button is checked or not
