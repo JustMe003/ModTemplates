@@ -984,7 +984,7 @@
 
 
 ---@class UI # Root component containing all UI related objects
----@field CreateEmpty fun(parent: UIObject): EmptyUIObject # Creates a container that displays nothing. Used to create a better layout
+---@field CreateEmpty fun(parent: UIObject): Empty # Creates a container that displays nothing. Used to create a better layout
 ---@field CreateVerticalLayoutGroup fun(parent: UIObject): VerticalLayoutGroup # Creates a VerticalLayoutGroup that will display all it's children vertically
 ---@field CreateHorizontalLayoutGroup fun(parent: UIObject): HorizontalLayoutGroup # Create a HorizontalLayoutGroup that will display all it's children horizontally
 ---@field CreateLabel fun(parent: UIObject): Label # An UI object for displaying text
@@ -1026,11 +1026,15 @@
 ---@field SetInteractable fun(bool: boolean): InteractableUIObject # Set the UI object interactable or not interactable
 ---@field GetInteractable fun(): boolean # Returns true if the client can interact with the UI object
 
----@class EmptyUIObject: UIObject # A container that displays nothing. Used to create a better layout
+---@class Empty: UIObject # A container that displays nothing. Used to create a better layout
 
 ---@class VerticalLayoutGroup: UIObject # A container that stacks all its children vertically
+---@field SetCenter fun(bool: boolean): VerticalLayoutGroup # When passed true, make all elements in this group align in the center. Otherwise they will all align to the left
+---@field GetCenter fun(): boolean # Returns true if all elements are aligned in the center, returns false if all elements are aligned left
 
 ---@class HorizontalLayoutGroup: UIObject # A container that stacks all its children horizontally
+---@field SetCenter fun(bool: boolean): HorizontalLayoutGroup # When passed true, make all elements in this group align in the center. Otherwise they will all align to the left
+---@field GetCenter fun(): boolean # Returns true if all elements are aligned in the center, returns false if all elements are aligned left
 
 ---@class Label: UIObject, TextUIObject, ColorUIObject # A UI object for displaying text
 
