@@ -1,5 +1,5 @@
 Annotations for [Warzone mod development](https://www.warzone.com/wiki/Mod_Developers_Guide), using luals.
-This gives you tons of warzone spesific types, incuding autocomplete. You no longer need to memorize the mod API!
+This gives you tons of warzone specific types, incuding autocomplete. You no longer need to memorize the mod API!
 
 To use annotations, add the file to your workspace. Do not require the file!
 First clone this repository so you have a local copy. Then add the path to the workspace library.
