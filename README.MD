@@ -4,7 +4,8 @@ This gives you tons of warzone specific types, incuding autocomplete. You no lon
 ## How to use
 The files in this repository are like a template. When you are creating a mod, just copy the files you need and leave these original files intact.
 To have an easier access to this repository, you can clone the repo to your local machine.
-One exception is the [Annotations](https://github.com/JustMe003/ModTemplates/blob/main/Annotations.lua) file, this file contains all the warzone specific types. The file is rather large, and we don't need the file in every mod; It only acts as a type library, it is not needed to copy-paste the file into every new project
+
+The one exception is the [Annotations](https://github.com/JustMe003/ModTemplates/blob/main/Annotations.lua) file, this file contains all the warzone specific types. The file is rather large, and we don't need the file in every mod; It only acts as a type library, it is not needed to copy-paste the file into every new project
 
 ## How to add Annotations to your projects
 
