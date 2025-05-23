@@ -1,7 +1,7 @@
 ---@meta _
 
 -------------------------------
---- Warzone Version: 5.34.1 ---
+--- Warzone Version: 5.36.0 ---
 -------------------------------
 
 ---@class ProxyObject # Proxy object class
@@ -586,7 +586,7 @@
 ---@field ID TerritoryID # The TerritoryID which is connected with this connection
 ---@field Wrap EnumTerritoryConnectionWrap # The enum type of connection
 
----@class CardGame # Settings of a card in the game, abstract type
+---@class CardGame: ProxyObject # Settings of a card in the game, abstract type
 ---@field ActiveCardExpireBehavior ActiveCardExpireBehaviorOptions # The behaviour when the card expires
 ---@field ActiveOrderDuration integer # The amount of turns this card is active
 ---@field CardID CardID # The identifier used to identify this CardGame
@@ -767,6 +767,7 @@
 ---@field FogMod FogModWL # Allows for creating FogMod objects
 ---@field TextAlignmentOptions TextAlignmentEnum # Enum for alignment of text in labels 
 ---@field TerritoryAnnotation TerritoryAnnotationWL # Allow for creating TerritoryAnnotations
+---@field DistributionMode DistributionModeEnum # Enum for distribution modes
 
 ---@class EnumPlayerID #
 ---| 'Neutral' # The PlayerID representing a neutral territory
@@ -1039,6 +1040,11 @@
 ---@class TerritoryAnnotationWL # WL TerritoryAnnotation
 ---@field Create fun(message: string, fontSize: integer, fillColor: integer): TerritoryAnnotation # Creates a TerritoryAnnotation object
 
+---@class DistributionModeEnum
+---| 'FullDistribution' # Distribution mode ID for a full distribution
+---| 'RandomWarlordsDistribution' # Distribution mode ID for a random warlords distribution
+---| 'RandomCitiesDistribution' # Distribution mode ID for a random cities distribution
+---| 'CustomScenario' # Distribution mode ID for a custom scenario
 
 ---@class UI # Root component containing all UI related objects
 ---@field CreateEmpty fun(parent: UIObject): Empty # Creates a container that displays nothing. Used to create a better layout
