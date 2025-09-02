@@ -835,6 +835,7 @@
 ---| 'Attack' # Idle attack
 ---| 'Mortar' # Idle mortar
 ---| 'Recipe' # Idle recipe
+---@field Custom fun(name: string): EnumStructureType # Used to gets the ID of a custom structure
 
 ---@class EnumMoveOrder # Move order enums
 ---| 'Cycle' # Create a random move order list, and use that for every turn
