@@ -28,14 +28,3 @@ function countUnit(armies, unitName)
     end
     return ret;
 end
-
----Function that checks whether a value is in the given table
----@param t table # The table in which you want to search for the value
----@param v any # The value that has to be searched for
----@return boolean # True if the value is in the table, false otherwise
-function valueInTable(t, v)
-    for _, v2 in pairs(t) do
-        if v == v2 then return true; end
-    end
-    return false;
-end
