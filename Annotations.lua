@@ -1,7 +1,7 @@
 ---@meta _
 
 -------------------------------
---- Warzone Version: 5.36.0 ---
+--- Warzone Version: 5.38.0 ---
 -------------------------------
 
 ---@class ProxyObject # Proxy object class
