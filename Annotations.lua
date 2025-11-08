@@ -768,6 +768,7 @@
 ---@field TextAlignmentOptions TextAlignmentEnum # Enum for alignment of text in labels 
 ---@field TerritoryAnnotation TerritoryAnnotationWL # Allow for creating TerritoryAnnotations
 ---@field DistributionMode DistributionModeEnum # Enum for distribution modes
+WL = {}
 
 ---@class EnumPlayerID #
 ---| 'Neutral' # The PlayerID representing a neutral territory
