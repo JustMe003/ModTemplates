@@ -758,6 +758,7 @@
 ---@field GameOrderPlayCardSpy GameOrderPlayCardSpyWL # Allows for creating GameOrderPlayCardSpy objects
 ---@field GameOrderPlayCardSurveillance GameOrderPlayCardSurveillanceWL # Allows for creating GameOrderPlayCardSurveillance objects
 ---@field GameOrderReceiveCard GameOrderReceiveCardWL # Allows for creating GameOrderReceiveCard objects
+---@field RectangleVM RectangleVMWL # Allows for creating RectangleVM objects
 ---@field IncomeMod IncomeModWL # Allows for creating IncomeMod objects
 ---@field IsVersionOrHigher fun(version: string): boolean # Returns whether the client uses the version or a higher version than the one provided
 ---@field PlayerCards PlayerCardsWL # Allows for creating PlayerCards objects
@@ -768,17 +769,20 @@
 ---@field TextAlignmentOptions TextAlignmentEnum # Enum for alignment of text in labels 
 ---@field TerritoryAnnotation TerritoryAnnotationWL # Allow for creating TerritoryAnnotations
 ---@field DistributionMode DistributionModeEnum # Enum for distribution modes
+---@field CancelClickIntercept any # Value that can be returned from InterceptNextTerritoryClick or InterceptNextBonusLinkClick to cancel the intercept
+
+---@alias EnumValue integer
 
 ---@class EnumPlayerID #
----| 'Neutral' # The PlayerID representing a neutral territory
----| 'Fog' # The PlayerID representing a fogged territory
----| 'AvailableForDistribution' # The PlayerID representing a territory that can be picked; Only used in the distribution turn
----| 'ToString' # Function
+---@field Neutral EnumValue # The PlayerID representing a neutral territory
+---@field Fog EnumValue # The PlayerID representing a fogged territory
+---@field AvailableForDistribution EnumValue # The PlayerID representing a territory that can be picked; Only used in the distribution turn
+---@field ToString EnumValue # Function
 
 ---@class EnumTerritoryConnectionWrap #
----| 'Normal' # A normal connection
----| 'WrapHorizontally' # A connection that wraps horizontally
----| 'WrapVertically' # A connection that wraps vertically
+---@field Normal EnumValue # A normal connection
+---@field WrapHorizontally EnumValue # A connection that wraps horizontally
+---@field WrapVertically EnumValue # A connection that wraps vertically
 
 ---@class CustomSpecialUnitBuilder: CustomSpecialUnitClass # Custom special unit builder
 ---@field Create fun(playerID: PlayerID): CustomSpecialUnitBuilder # Creates a new and empty CustomSpecialUnitBuilder object
@@ -786,100 +790,100 @@
 ---@field Build fun(): CustomSpecialUnit # Completes the build and returns a CustomSpecialUnit that can be added to the game
 
 ---@class EnumGamePlayerState # Player state enums
----| 'Invited' # Player is invited
----| 'Playing' # Player is playing
----| 'Eliminated' # Player is eliminated
----| 'Won' # Player has won
----| 'Declined' # Player has declined the invitation
----| 'RemovedByHost' # Player was invited but removed by the host
----| 'SurrenderAccepted' # Player successfully surrendered
----| 'Booted' # Player was booted
----| 'EndedByVote' # The game ended by voting to end
+---@field Invited EnumValue # Player is invited
+---@field Playing EnumValue # Player is playing
+---@field Eliminated EnumValue # Player is eliminated
+---@field Won EnumValue # Player has won
+---@field Declined EnumValue # Player has declined the invitation
+---@field RemovedByHost EnumValue # Player was invited but removed by the host
+---@field SurrenderAccepted EnumValue # Player successfully surrendered
+---@field Booted EnumValue # Player was booted
+---@field EndedByVote EnumValue # The game ended by voting to end
 
 ---@class EnumGameState # Game state enums
----| 'WaitingForPlayers' # Game is waiting for players to join
----| 'Playing' # Game is playing
----| 'Finished' # Game has ended
----| 'DistributingTerritories' # Game is distribution territories
+---@field WaitingForPlayers EnumValue # Game is waiting for players to join
+---@field Playing EnumValue # Game is playing
+---@field Finished EnumValue # Game has ended
+---@field DistributingTerritories EnumValue # Game is distribution territories
 
 ---@class EnumStandingFogLevel # Fog level for territory standing enums
----| 'You' # Player controls the territory
----| 'Visible' # Player can see the territory, but does not control it
----| 'OwnerOnly' # Player can see the owner of the territory only
----| 'Fogged' # Territory is fogged for the player
+---@field You EnumValue # Player controls the territory
+---@field Visible EnumValue # Player can see the territory, but does not control it
+---@field OwnerOnly EnumValue # Player can see the owner of the territory only
+---@field Fogged EnumValue # Territory is fogged for the player
 
 ---@class EnumGameFogLevel # Fog level for game settings enums
----| 'ExtremeFog' # Complete fog
----| 'Foggy' # Dense fog
----| 'LightFog' # Light fog
----| 'ModerateFog'# Normal fog
----| 'NoFog' # No fog
----| 'VeryFoggy' # Heavy fog
+---@field ExtremeFog EnumValue # Complete fog
+---@field Foggy EnumValue # Dense fog
+---@field LightFog EnumValue # Light fog
+---@field ModerateFog EnumValue# Normal fog
+---@field NoFog EnumValue # No fog
+---@field VeryFoggy EnumValue # Heavy fog
 
 ---@class EnumStructureType # Structure type enums
----| 'City' # City
----| 'ArmyCamp' # Idle army camp
----| 'Mine' # Idle mine
----| 'Smelter' # Idle smelter
----| 'Crafter' # Idle crafter
----| 'Market' # Idle market
----| 'ArmyCache' # Idle army cache
----| 'MoneyCache' # Idle money cache
----| 'ResourceChache' # Idle resource cache
----| 'MercenaryCamp' # Idle mercenary cache
----| 'Power' # Idle power
----| 'Draft' # Idle draft
----| 'Arena' # Idle arena
----| 'Hospital' # Idle hospital
----| 'DigSite' # Idle dig site
----| 'Attack' # Idle attack
----| 'Mortar' # Idle mortar
----| 'Recipe' # Idle recipe
+---@field City EnumValue # City
+---@field ArmyCamp EnumValue # Idle army camp
+---@field Mine EnumValue # Idle mine
+---@field Smelter EnumValue # Idle smelter
+---@field Crafter EnumValue # Idle crafter
+---@field Market EnumValue # Idle market
+---@field ArmyCache EnumValue # Idle army cache
+---@field MoneyCache EnumValue # Idle money cache
+---@field ResourceChache EnumValue # Idle resource cache
+---@field MercenaryCamp EnumValue # Idle mercenary cache
+---@field Power EnumValue # Idle power
+---@field Draft EnumValue # Idle draft
+---@field Arena EnumValue # Idle arena
+---@field Hospital EnumValue # Idle hospital
+---@field DigSite EnumValue # Idle dig site
+---@field Attack EnumValue # Idle attack
+---@field Mortar EnumValue # Idle mortar
+---@field Recipe EnumValue # Idle recipe
 ---@field Custom fun(name: string): EnumStructureType # Used to gets the ID of a custom structure
 
 ---@class EnumMoveOrder # Move order enums
----| 'Cycle' # Create a random move order list, and use that for every turn
----| 'NoLuckCycle' # Time spent on the first turn determines the move order
----| 'Random' # Randomise the move order every turn
+---@field Cycle EnumValue # Create a random move order list, and use that for every turn
+---@field NoLuckCycle EnumValue # Time spent on the first turn determines the move order
+---@field Random EnumValue # Randomise the move order every turn
 
 ---@class RoundingModeEnum # Rounding mode enums
----| 'StraightRound'
----| 'WeightedRandom'
+---@field StraightRound EnumValue
+---@field WeightedRandom EnumValue
 
 ---@class ActiveCardExpireBehaviorOptions # Active card expire behaviour enums
----| 'EndOfTurn' # Card expires at the end of the turn
----| 'BeginningOfNextTurn' # Card expires at the start of the turn
+---@field EndOfTurn EnumValue # Card expires at the end of the turn
+---@field BeginningOfNextTurn EnumValue # Card expires at the start of the turn
 
 ---@class EnumReinforcementCardMode # Reinforcement card mode enums
----| 'Fixed' # Armies amount is fixed
----| 'ProgressiveByNumberOfTerritories' # Progressive by the number of territories the player owns
----| 'ProgressiveByTurnNumber' # Progressive by the amount of turns that have passed
+---@field Fixed EnumValue # Armies amount is fixed
+---@field ProgressiveByNumberOfTerritories EnumValue # Progressive by the number of territories the player owns
+---@field ProgressiveByTurnNumber EnumValue # Progressive by the amount of turns that have passed
 
 ---@class EnumTurnPhase # Turn phase enums
----| 'Airlift' # Airlift turn phase
----| 'Attacks' # Attack / transfer turn phase
----| 'BlockadeCards' # Blockade card turn phase
----| 'BombCards' # Bomb card turn phase
----| 'CardsWearOff' # Cards wearing off turn phase
----| 'Deploys' # Deploy turn phase
----| 'DiplomacyCards' # Diplomacy card turn phase
----| 'Discards' # Discard cards turn phase
----| 'EmergencyBlockadeCards' # Emergency blockade card turn phase
----| 'Gift' # Gift card turn phase
----| 'OrderPriorityCards' # Priority card turn phase
----| 'Purchase' # Purchase turn phase
----| 'ReceiveCards' # Receive cards turn phase
----| 'ReinforcementCards' # Reinforcement card turn phase
----| 'SanctionCards' # Sanction card turn phase
----| 'SpyingCards' # Spy card turn phase
+---@field Airlift EnumValue # Airlift turn phase
+---@field Attacks EnumValue # Attack / transfer turn phase
+---@field BlockadeCards EnumValue # Blockade card turn phase
+---@field BombCards EnumValue # Bomb card turn phase
+---@field CardsWearOff EnumValue # Cards wearing off turn phase
+---@field Deploys EnumValue # Deploy turn phase
+---@field DiplomacyCards EnumValue # Diplomacy card turn phase
+---@field Discards EnumValue # Discard cards turn phase
+---@field EmergencyBlockadeCards EnumValue # Emergency blockade card turn phase
+---@field Gift EnumValue # Gift card turn phase
+---@field OrderPriorityCards EnumValue # Priority card turn phase
+---@field Purchase EnumValue # Purchase turn phase
+---@field ReceiveCards EnumValue # Receive cards turn phase
+---@field ReinforcementCards EnumValue # Reinforcement card turn phase
+---@field SanctionCards EnumValue # Sanction card turn phase
+---@field SpyingCards EnumValue # Spy card turn phase
 
 ---@class EnumAttackTransfer # Attack / transfer enums
----| 'Attack' # Attack only
----| 'Transfer' # Transfer only
----| 'AttackTransfer' # Attack and transfer
+---@field Attack EnumValue # Attack only
+---@field Transfer EnumValue # Transfer only
+---@field AttackTransfer EnumValue # Attack and transfer
 
 ---@class EnumResourceType # Resource type enums
----| 'Gold' # Gold enum
+---@field Gold EnumValue # Gold enum
 
 ---@class ArmiesWL # WL Armies
 ---@field Create fun(armies: integer, specialUnitOpt?: SpecialUnit[] | nil): Armies # Used to create a new Armies object. Special units can be nil, omitted, or an empty array if there aren't any.
@@ -1010,6 +1014,9 @@
 ---@class GameOrderReceiveCardWL # WL GameOrderReceiveCard
 ---@field Create fun(playerID: PlayerID, instances: CardInstance[]): GameOrderReceiveCard # Creates a GameOrderReceiveCard object
 
+---@class RectangleVMWL # WL RectangleVM
+---@field Create fun(left: number, top: number, right: number, bottom: number): RectangleVM # Creates a RectangleVM object
+
 ---@class IncomeModWL # WL IncomeMod
 ---@field Create fun(pid: PlayerID, mod: integer, msg: string, bonusIDOpt: BonusID | nil): IncomeMod # Creates a IncomeMod object
 
@@ -1020,32 +1027,32 @@
 ---@field Create fun(terrID: TerritoryID): TerritoryModification # Creates a TerritoryModification object
 
 ---@class EnumModOrderControl # Enum values of ModOrderControl
----| 'Keep' # Keep the order
----| 'Skip' # Skip the order and add an order that tells the player it got skipped
----| 'SkipAndSupressSkippedMessage' # Skip the order but not add an order that tells the player it got skipped
+---@field Keep EnumValue # Keep the order
+---@field Skip EnumValue # Skip the order and add an order that tells the player it got skipped
+---@field SkipAndSupressSkippedMessage EnumValue # Skip the order but not add an order that tells the player it got skipped
 
 ---@class FogModWL # WL FogMod
 ---@field Create fun(message: string, fogLevel: EnumStandingFogLevel, priority: integer, territories: HashSet<TerritoryID>, playersAffectedOpt: HashSet<PlayerID> | nil): FogMod # Creates a [FogMod](lua://FogMod) object
 
 ---@class TextAlignmentEnum # Enum values for text alignments for labels
----| 'TopLeft' # Align the text top left corner
----| 'Top' # Align the text in the top and center
----| 'TopRight' # Align the text in the top right corner
----| 'Left' # Align the text center and left
----| 'Center' # Align the text in the center
----| 'Right' # Align the text center and right
----| 'BottomLeft' # Align the text bottom left corner
----| 'Bottom' # Align the text in the bottom
----| 'BottomRight' # Align the text in the bottom right corner
+---@field TopLeft EnumValue # Align the text top left corner
+---@field Top EnumValue # Align the text in the top and center
+---@field TopRight EnumValue # Align the text in the top right corner
+---@field Left EnumValue # Align the text center and left
+---@field Center EnumValue # Align the text in the center
+---@field Right EnumValue # Align the text center and right
+---@field BottomLeft EnumValue # Align the text bottom left corner
+---@field Bottom EnumValue # Align the text in the bottom
+---@field BottomRight EnumValue # Align the text in the bottom right corner
 
 ---@class TerritoryAnnotationWL # WL TerritoryAnnotation
----@field Create fun(message: string, fontSize: integer, fillColor: integer): TerritoryAnnotation # Creates a TerritoryAnnotation object
+---@field Create fun(message: string, fontSize: integer | nil, fillColor: integer | nil): TerritoryAnnotation # Creates a TerritoryAnnotation object
 
 ---@class DistributionModeEnum
----| 'FullDistribution' # Distribution mode ID for a full distribution
----| 'RandomWarlordsDistribution' # Distribution mode ID for a random warlords distribution
----| 'RandomCitiesDistribution' # Distribution mode ID for a random cities distribution
----| 'CustomScenario' # Distribution mode ID for a custom scenario
+---@field FullDistribution EnumValue # Distribution mode ID for a full distribution
+---@field RandomWarlordsDistribution EnumValue # Distribution mode ID for a random warlords distribution
+---@field RandomCitiesDistribution EnumValue # Distribution mode ID for a random cities distribution
+---@field CustomScenario EnumValue # Distribution mode ID for a custom scenario
 
 ---@class UI # Root component containing all UI related objects
 ---@field CreateEmpty fun(parent: UIObject): Empty # Creates a container that displays nothing. Used to create a better layout
@@ -1232,11 +1239,14 @@
 
 ---@class Mod # Class for mod data
 ---@field Settings table # Allows for saving custom settings for your mod. Only writable in Client_PresentConfigureUI and Client_SaveCOnfigureUI hooks
----@field PublicGameData table # Public mod data that can be accessed anywhere, only writable in server hooks
 
 ---@class ModServerHook: Mod # Class for mod data for server hooks
 ---@field PlayerGameData table<PlayerID, table> # Player mod data object. For clients, only the table corresponding to the player will be made accessible
 ---@field PrivateGameData table # Private mod data, not made accessible to clients
+---@field PublicGameData table # Public mod data that can be accessed anywhere, only writable in server hooks
 
 ---@class ModClientHook: Mod # Class for mod data for client hooks
 ---@field PlayerGameData table # The player mod data, can not be written in client hooks
+---@field PublicGameData table # Public mod data that can be accessed anywhere, only writable in server hooks
+
+---@class ModConfigHook: Mod
