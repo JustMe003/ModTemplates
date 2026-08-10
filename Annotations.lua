@@ -262,6 +262,7 @@
 ---@field Phase EnumTurnPhase | nil # Optional phase parameter of the card. Determines when the card is played during a turn
 ---@field JumpToActionSpotOpt RectangleVM # Makes the client view jump to the given RectangleVM
 ---@field TerritoryAnnotationsOpt table<TerritoryID, TerritoryAnnotation> # When the order is selected in the orders list by the player, these messages will be presented on top of the territories specified
+---@field Icon string # The name of the icon that will appear in the orderlist. Must be a 40x40 pixels png file
 
 ---@class GameOrderAttackTransfer: GameOrder # Game order for attacking and / or transfering
 ---@field AttackTeammates boolean # Set to true if the order will attack teammates
@@ -314,6 +315,7 @@
 ---@field RemoveFogModsOpt GUID[] # Removes [FogMods](lua://FogMod) that were previously added
 ---@field ModID ModID | nil # The ID of the mod who created this order
 ---@field TerritoryAnnotationsOpt table<TerritoryID, TerritoryAnnotation> # When the order is selected in the orders list by the player, these messages will be presented on top of the territories specified
+---@field Icon string # The name of the icon that will appear in the orderlist. Must be a 40x40 pixels png file
 
 ---@class GameOrderCustom: GameOrder # Custom game order, mostly used for creating custom client orders that are processed into GameOrderEvents on the server side
 ---@field Message string # The message that appear in the order list
@@ -322,6 +324,7 @@
 ---@field OccursInPhase EnumTurnPhase | integer | nil # The phase in which this order will be processed. Note that when you create a GameOrderCustom and set this field, you must add the order in the order list in the right place
 ---@field JumpToActionSpotOpt RectangleVM # Makes the client view jump to the given RectangleVM
 ---@field TerritoryAnnotationsOpt table<TerritoryID, TerritoryAnnotation> # When the order is selected in the orders list by the player, these messages will be presented on top of the territories specified
+---@field Icon string # The name of the icon that will appear in the orderlist. Must be a 40x40 pixels png file
 
 ---@class GameOrderPurchase: GameOrder # Game order for purchasing
 ---@field BuildCities table<TerritoryID, integer> # Table containing each territory ID where a city will be built and the amount of cities for that territory
@@ -1204,6 +1207,8 @@
 ---@field GetInteractable fun(): boolean # Returns true if the client can interact with the UI object
 ---@field SetMinWidth fun(minWidth: number): TextInputField # Set the minimum width of the object. Be careful with this property, since devices differ in size a lot. A maximum value of 60 should be used for this property
 ---@field SetMinHeight fun(minHeight: number): TextInputField # Set the minimum height of the object
+---@field SetOnValueChanged fun(callback: fun()): TextInputField # Sets the function that will be called when the value is changed
+---@field GetOnValueChanged fun(): fun() # Gets the function that will be called when the value is changed
 
 ---@class NumberInputField: UIObject # A container used for getting number inputs
 ---@field SetPreferredWidth fun(width: number): NumberInputField # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
@@ -1226,7 +1231,9 @@
 ---@field GetInteractable fun(): boolean # Returns true if the client can interact with the UI object
 ---@field SetMinWidth fun(minWidth: number): NumberInputField # Set the minimum width of the object. Be careful with this property, since devices differ in size a lot. A maximum value of 60 should be used for this property
 ---@field SetMinHeight fun(minHeight: number): NumberInputField # Set the minimum height of the object
-
+---@field SetOnValueChanged fun(callback: fun()): NumberInputField # Sets the function that will be called when the value is changed
+---@field GetOnValueChanged fun(): fun() # Gets the function that will be called when the value is changed
+---@
 ---@class RootParent: UIObject # The root parent of any dialog. Note that this parent should only have 1 child
 ---@field SetPreferredWidth fun(width: number): RootParent # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
 ---@field SetPreferredHeight fun(height: number): RootParent # Set the preferred height of the object. It may not be this tall if there is not enough space, and it may be taller if FlexibleHeight is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
