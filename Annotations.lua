@@ -1,7 +1,7 @@
 ---@meta _
 
 -------------------------------
---- Warzone Version: 5.38.0 ---
+--- Warzone Version: 6.05.0 ---
 -------------------------------
 
 ---@class ProxyObject # Proxy object class
@@ -88,7 +88,7 @@
 ---@field SpeedSamplesForBoot integer[] # Not documented
 ---@field State EnumGamePlayerState # The State of the player in this game
 ---@field Surrendered boolean # True if the player has surrendered
----@field Team TeamID # The identifier of the team this player is on. -1 means the player is in no team at all
+---@field Team TeamID # The identifier of the team this player is on. -1 means the player is in no team at all. Note that since V6.05 players can switch teams. This is tracked in the game standing, this field will show only the team the player started on
 ---@field TimesBooted integer # The amount of times the player has been booted from this game
 ---@field TimesComeBackFromAI integer # The number of times the player has taken back control after being an AI
 ---@field TurnSince DateTime # The DateTime of when the last turn advanced and the player was able to create their orders
@@ -127,6 +127,7 @@
 ---@field Territories table<TerritoryID, TerritoryStanding> # Table containing all the TerritoryStandings, identified by the TerritoryID
 ---@field Resources table<PlayerID, table<EnumResourceType, integer>> # Table containing the resources of each player
 ---@field IncomeMods IncomeMod[] # Array containing all the income modifications made last turn. Writable in the Server_StartGame hook
+---@field TeamOverridesOpt table<PlayerID, TeamID> # Table containing the overridden teams of each player
 ---@field NumResources fun(playerID: PlayerID, type: EnumResourceType): integer # Returns the amount of this resource type a player has
 
 ---@class TerritoryStanding: ProxyObject # Territory standing
@@ -316,6 +317,7 @@
 ---@field ModID ModID | nil # The ID of the mod who created this order
 ---@field TerritoryAnnotationsOpt table<TerritoryID, TerritoryAnnotation> # When the order is selected in the orders list by the player, these messages will be presented on top of the territories specified
 ---@field Icon string # The name of the icon that will appear in the orderlist. Must be a 40x40 pixels png file
+---@field AssignTeamOpt table<PlayerID, TeamID> # Assign players to a team. A TeamID of -1 will remove the player from their team
 
 ---@class GameOrderCustom: GameOrder # Custom game order, mostly used for creating custom client orders that are processed into GameOrderEvents on the server side
 ---@field Message string # The message that appear in the order list
