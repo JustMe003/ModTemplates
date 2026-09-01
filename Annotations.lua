@@ -1059,7 +1059,13 @@
 ---@field RandomCitiesDistribution EnumValue # Distribution mode ID for a random cities distribution
 ---@field CustomScenario EnumValue # Distribution mode ID for a custom scenario
 
----@class UI # Root component containing all UI related objects
+---@class BaseUI
+---@field Alert fun(text: string) # Creates a small alert box with the passed text
+---@field PromptFromList fun(message: string, options: ListOption[]) # Allows a client to pick an option from a list
+---@field InterceptNextTerritoryClick fun(callback: fun(terrDetails: TerritoryDetails)) # Intercept the next click on a territory, then invokes the passed function with the TerritoryDetails of the clicked territory. In the callback function, returning `WL.CancelClickIntercept` will allow the normal action to take place instead of blocking it
+---@field InterceptNextBonusLinkClick fun(callback: fun(bonusDetails: BonusDetails)) # Intercept the next click on a bonus link, then invokes the passed function with the BonusDetails of the clicked bonus. In the callback function, returning `WL.CancelClickIntercept` will allow the normal action to take place instead of blocking it
+
+---@class UI: BaseUI # Root component containing all UI related objects
 ---@field CreateEmpty fun(parent: UIObject): Empty # Creates a container that displays nothing. Used to create a better layout
 ---@field CreateVerticalLayoutGroup fun(parent: UIObject): VerticalLayoutGroup # Creates a VerticalLayoutGroup that will display all it's children vertically
 ---@field CreateHorizontalLayoutGroup fun(parent: UIObject): HorizontalLayoutGroup # Create a HorizontalLayoutGroup that will display all it's children horizontally
@@ -1072,10 +1078,6 @@
 ---@field CreateNumberInputField fun(parent: UIObject): NumberInputField # A UI object for inputting number values
 ---@field Destroy fun(object: UIObject) # Destroys and removes the passed UI object, note that all children are also destroyed
 ---@field IsDestroyed fun(object: UIObject | nil): boolean # Returns whether the passed UI object is destroyed or not
----@field Alert fun(text: string) # Creates a small alert box with the passed text
----@field PromptFromList fun(message: string, options: ListOption[]) # Allows a client to pick an option from a list
----@field InterceptNextTerritoryClick fun(callback: fun(terrDetails: TerritoryDetails)) # Intercept the next click on a territory, then invokes the passed function with the TerritoryDetails of the clicked territory. In the callback function, returning `WL.CancelClickIntercept` will allow the normal action to take place instead of blocking it
----@field InterceptNextBonusLinkClick fun(callback: fun(bonusDetails: BonusDetails)) # Intercept the next click on a bonus link, then invokes the passed function with the BonusDetails of the clicked bonus. In the callback function, returning `WL.CancelClickIntercept` will allow the normal action to take place instead of blocking it
 
 ---@class ListOption # Small table for option
 ---@field text string # The text displayed on the option
@@ -1235,7 +1237,7 @@
 ---@field SetMinHeight fun(minHeight: number): NumberInputField # Set the minimum height of the object
 ---@field SetOnValueChanged fun(callback: fun()): NumberInputField # Sets the function that will be called when the value is changed
 ---@field GetOnValueChanged fun(): fun() # Gets the function that will be called when the value is changed
----@
+
 ---@class RootParent: UIObject # The root parent of any dialog. Note that this parent should only have 1 child
 ---@field SetPreferredWidth fun(width: number): RootParent # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
 ---@field SetPreferredHeight fun(height: number): RootParent # Set the preferred height of the object. It may not be this tall if there is not enough space, and it may be taller if FlexibleHeight is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself

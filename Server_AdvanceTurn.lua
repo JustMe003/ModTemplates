@@ -1,3 +1,10 @@
+---@type ModServerHook
+---@diagnostic disable-next-line: assign-type-mismatch
+Mod = Mod;
+
+---@type WL
+WL = WL;
+
 ---Server_AdvanceTurn_Start hook
 ---@param game GameServerHook
 ---@param addNewOrder fun(order: GameOrder) # Adds a game order, will be processed before any of the rest of the orders

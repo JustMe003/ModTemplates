@@ -1,7 +1,15 @@
-require("Annotations");
+---@type ModClientHook
+---@diagnostic disable-next-line: assign-type-mismatch
+Mod = Mod;
 
----Client_GameRefresh hook
+---@type BaseUI
+UI = UI;
+
+---@type WL
+WL = WL;
+
+---Client_GameRefresh
 ---@param game GameClientHook
 function Client_GameRefresh(game)
-	
+    
 end

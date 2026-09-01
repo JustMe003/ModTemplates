@@ -1,3 +1,13 @@
+---@type ModClientHook
+---@diagnostic disable-next-line: assign-type-mismatch
+Mod = Mod;
+
+---@type BaseUI
+UI = UI;
+
+---@type WL
+WL = WL;
+
 ---Client_GameOrderCreated hook
 ---@param game GameClientHook
 ---@param order GameOrder # The order that was just created by the player
