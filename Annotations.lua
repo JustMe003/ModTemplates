@@ -1,7 +1,7 @@
 ---@meta _
 
 -------------------------------
---- Warzone Version: 6.05.0 ---
+--- Warzone Version: 6.06.0 ---
 -------------------------------
 
 ---@class ProxyObject # Proxy object class
@@ -704,7 +704,35 @@
 
 ---@class HashSet<T>: { [integer]: T} # Array of type T, must not contain duplicates
 
+---@class Visual
+---@field SetVertices fun(vertices: Vertex[]): Visual # Sets the vertices of the visual. At most 1024 vertices. If you do not call `SetTriangles`, every 3 vertices form a triangle.
+---@field SetTriangles fun(indices: integer[]): Visual # Sets the triangles in the mesh. Each integer is an index that points to the corresponding vertex in the vertex array you pass to `SetVertices`. Must have a length of a multiple of 3, since all triangles have 3 corners. At most 2048 triangles
+---@field SetColors fun(colors: VisualColor | VisualColor[]): Visual # Sets the color of the vertices. If a single color is passed, all vertices become this color. Otherwise you have to pass the same number of colors as there are vertices
+---@field SetFrames fun(frames: VisualFrame[]): Visual # Sets the frames for the visual. Used to animate the visual, maximum of 32 frames
+---@field SetDuration fun(milliseconds: integer): Visual # Sets the duration of the visual. Only matters for animated visuals, values should be between 1 and 10.000
+---@field SetRestTime fun(t: number): Visual # Sets the visual 'rest' pose. When the visual is not played, the visual at this timestamp is shown
+---@field SetAnchorTerritory fun(territoryID: TerritoryID): Visual # Makes all vertices coordinates relative to the middle point of the passed territory, so that {0, 0} is the territories center
+---@field SetAnchorPoint fun(x: number, y: number): Visual # Makes all vertices coordinates relative to the passed coordinates
 
+---@class VisualFrame # A frame for a visual. Used for animations. War.App tweens the vertices and colors between frames to animate the visual
+---@field Vertices Vertex[] # The vertices for this frame. Note that all frames must have the same number of vertices
+---@field Colors VisualColor | VisualColor[]? # The colors for the vertices in this frame
+---@field t number? # The timestamp as a fraction (value must be between 0 and 1). Each frame must not be less than the frame before it. Either give all frames a value for `t` or none, in which case all frames are spread evenly.
+---@field Ease VisualFrameEase? # How the tween that ends this frame is paced
+
+---@enum VisualFrameEase
+---| 'Linear' # Default
+---| 'EaseIn'
+---| 'EaseOut'
+---| 'EaseInOut'
+---| 'Step' # Holds the previous pose until the current `t` is reached
+
+---@alias Vertex number[] # Table like the following: { x , y , [z] }, where `x`, `y` and `z` are all numbers and `z` is optional
+---@alias VisualColor HexColor | HexAlphaColor | RGBObject | RGBAObject
+---@alias HexColor string # String starting with "#" and containing 6 hexadecimal characters. 
+---@alias HexAlphaColor string # String starting with "#" and containing 8 hexadecimal characters. The first 2 characters indicate the transparancy of the object
+---@alias RGBObject number[] # Array of length 3: { r , g , b }
+---@alias RGBAObject number[] # Array of length 4: { r , g, b, a } 
 
 ---@class WL # Table containing all enum values and create functions
 ---@field PlayerID EnumPlayerID # The table containing all PlayerID enums
@@ -1076,6 +1104,8 @@
 ---@field CreateRadioButton fun(parent: UIObject): RadioButton
 ---@field CreateTextInputField fun(parent: UIObject): TextInputField # A UI object for inputting text values
 ---@field CreateNumberInputField fun(parent: UIObject): NumberInputField # A UI object for inputting number values
+---@field CreateImage fun(parent: UIObject): UIImage # A UI object for showing images
+---@field CreateSnapshot fun(parent: UIObject): UISnapshot # A UI object for showing snapshots of territories
 ---@field Destroy fun(object: UIObject) # Destroys and removes the passed UI object, note that all children are also destroyed
 ---@field IsDestroyed fun(object: UIObject | nil): boolean # Returns whether the passed UI object is destroyed or not
 
@@ -1152,6 +1182,16 @@
 ---@field GetInteractable fun(): boolean # Returns true if the client can interact with the UI object
 ---@field SetMinWidth fun(minWidth: number): Button # Set the minimum width of the object. Be careful with this property, since devices differ in size a lot. A maximum value of 60 should be used for this property
 ---@field SetMinHeight fun(minHeight: number): Button # Set the minimum height of the object
+---@field SetIcon fun(filename: string): Button # Sets the image for the button
+---@field GetIcon fun(): string # Returns the filename of the image of the button
+---@field SetIconPreferredWidth fun(width: number): Button # Sets the preferred icon width
+---@field GetIconPreferredWidth fun(): number # Gets the preferred icon width
+---@field SetIconPreferredHeight fun(height: number): Button # Sets the preferred icon height
+---@field GetIconPreferredHeight fun(): number # Gets the preferred icon height
+---@field SetIconMinWidth fun(width: number): Button # Sets the icon minimum width
+---@field GetIconMinWidth fun(): number # Gets the icon minimum width
+---@field SetIconMinHeight fun(height: number): Button # Sets the icon minimum height
+---@field GetIconMinHeight fun(): number # Gets the icon minimum height
 
 ---@class CheckBox: UIObject # A container used for getting boolean inputs from a client. If you want a user to select only 1 option from a list, see [RadioButton](lua://RadioButton)
 ---@field SetPreferredWidth fun(width: number): CheckBox # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
@@ -1213,6 +1253,8 @@
 ---@field SetMinHeight fun(minHeight: number): TextInputField # Set the minimum height of the object
 ---@field SetOnValueChanged fun(callback: fun()): TextInputField # Sets the function that will be called when the value is changed
 ---@field GetOnValueChanged fun(): fun() # Gets the function that will be called when the value is changed
+---@field SetMultiLine fun(bool: boolean): TextInputField # If passed true, text will be able to go over multiple lines. Passing false will disable this
+---@field GetMultiLine fun(): boolean # If it returns true, the text will be able to go over multiple lines.
 
 ---@class NumberInputField: UIObject # A container used for getting number inputs
 ---@field SetPreferredWidth fun(width: number): NumberInputField # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
@@ -1237,6 +1279,28 @@
 ---@field SetMinHeight fun(minHeight: number): NumberInputField # Set the minimum height of the object
 ---@field SetOnValueChanged fun(callback: fun()): NumberInputField # Sets the function that will be called when the value is changed
 ---@field GetOnValueChanged fun(): fun() # Gets the function that will be called when the value is changed
+
+---@class UIImage: UIObject # A container that can show an image
+---@field SetPreferredWidth fun(width: number): UIImage # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
+---@field SetPreferredHeight fun(height: number): UIImage # Set the preferred height of the object. It may not be this tall if there is not enough space, and it may be taller if FlexibleHeight is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
+---@field SetFlexibleWidth fun(width: number): UIImage # Set the flexible width of the object. A number from 0 to 1 indicating how much of the remaining space this element wishes to take up. Defaults to 0, which means the element will be no wider than PreferredWidth. Set it to 1 to indicate the object should grow to encompass all remaining horizontal space it can.
+---@field SetFlexibleHeight fun(height: number): UIImage # Set the flexible height of the object. A number from 0 to 1 indicating how much of the remaining space this element wishes to take up. Defaults to 0, which means the element will be no taller than PreferredHeight. Set it to 1 to indicate the object should grow to encompass all remaining vertical space it can
+---@field SetMinWidth fun(minWidth: number): UIImage # Set the minimum width of the object. Be careful with this property, since devices differ in size a lot. A maximum value of 60 should be used for this property
+---@field SetMinHeight fun(minHeight: number): UIImage # Set the minimum height of the object
+---@field SetSprite fun(filename: string): UIImage # Pass the filename of the sprite. The file should be in the 'UIImages' folder
+---@field GetSprite fun(): string # Gets the name of the file of the sprite
+
+---@class UISnapshot: UIObject # A container that can show a snapshot of territories
+---@field SetPreferredWidth fun(width: number): UISnapshot # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
+---@field SetPreferredHeight fun(height: number): UISnapshot # Set the preferred height of the object. It may not be this tall if there is not enough space, and it may be taller if FlexibleHeight is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
+---@field SetFlexibleWidth fun(width: number): UISnapshot # Set the flexible width of the object. A number from 0 to 1 indicating how much of the remaining space this element wishes to take up. Defaults to 0, which means the element will be no wider than PreferredWidth. Set it to 1 to indicate the object should grow to encompass all remaining horizontal space it can.
+---@field SetFlexibleHeight fun(height: number): UISnapshot # Set the flexible height of the object. A number from 0 to 1 indicating how much of the remaining space this element wishes to take up. Defaults to 0, which means the element will be no taller than PreferredHeight. Set it to 1 to indicate the object should grow to encompass all remaining vertical space it can
+---@field SetMinWidth fun(minWidth: number): UISnapshot # Set the minimum width of the object. Be careful with this property, since devices differ in size a lot. A maximum value of 60 should be used for this property
+---@field SetMinHeight fun(minHeight: number): UISnapshot # Set the minimum height of the object
+---@field SetTerritoryIDs fun(territories: TerritoryID[]): UISnapshot # Sets the territories in the snapshot 
+---@field GetTerritoryIDs fun(): TerritoryID[] # Gets the territories in the snapshot
+
+
 
 ---@class RootParent: UIObject # The root parent of any dialog. Note that this parent should only have 1 child
 ---@field SetPreferredWidth fun(width: number): RootParent # Set the preferred width of the object. It may not be this wide if there is not enough space, and it may be wider if FlexibleWidth is greater than 0. Defaults to -1, which is a special value meaning the object will meansure its own size based on its contents. Returns itself
